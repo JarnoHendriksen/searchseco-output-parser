@@ -11,7 +11,7 @@ jobs:
     name: Annotates pull request with metadata
     steps:
       - name: Annotate PR
-        uses: github-actions-test/PR-metadata-action@main
+        uses: JarnoHendriksengithub-actions-test@main
         with:
           owner: ${{ github.repository_owner }}
           repo: ${{ github.event.repository.name }}
