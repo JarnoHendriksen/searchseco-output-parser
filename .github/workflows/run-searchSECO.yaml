@@ -14,6 +14,5 @@ jobs:
     steps:
       - name: Pull docker image
         runs: "docker pull searchseco/controller"
-      
       - name: Run searchSECO
         runs: "docker run --name controller-container --entrypoint="./controller/build/searchseco" -e "github_token=$GH_TOKEN" -e "worker_name=FairSECOtest" searchseco/controller check github.repositoryUrl"
