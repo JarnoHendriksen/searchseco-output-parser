@@ -1,0 +1,19 @@
+name: Run SearchSECO
+
+on: 
+  push:
+
+env:
+  GH_TOKEN: secrets.GITHUB_TOKEN
+
+jobs:
+  
+  run-searchSeco:
+    runs-on: ubuntu-latest
+    name: Pulls searchSECOController dockerfile
+    steps:
+      - name: Pull docker image
+        runs: "docker pull searchseco/controller"
+      
+      - name: Run searchSECO
+        runs: "docker run --name controller-container --entrypoint="./controller/build/searchseco" -e "github_token=$GH_TOKEN" -e "worker_name=FairSECOtest" searchseco/controller check github.repositoryUrl"
