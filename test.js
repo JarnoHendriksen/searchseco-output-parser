@@ -1,3 +1,3 @@
 function testFunction(x){
-  return X+5;
+  return x+5;
 }
