@@ -1,0 +1,11 @@
+/.idea/
+/howfairis.egg-info/
+/**/__pycache__/
+/venv3
+/.eggs
+/.coverage
+/coverage.xml
+/htmlcov/
+
+docs/_build
+docs/apidocs
