@@ -4,7 +4,7 @@ from howfairis.requesting.get_from_platform import get_from_platform
 
 class CitationMixin:
     """ """
-    def check_citation(self):
+    def check_cit(self):
         """ """
         if not self.is_quiet:
             print("(4/5) citation")
