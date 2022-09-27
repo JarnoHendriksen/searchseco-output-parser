@@ -1,5 +1,0 @@
-include CITATION.cff
-include LICENSE
-include NOTICE
-include README.rst
-include howfairis/data/.howfairis.yml
