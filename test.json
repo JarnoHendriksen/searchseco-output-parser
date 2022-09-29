@@ -1,0 +1,30 @@
+{
+  "1234567890" : {
+    "local":{
+      "name" : "methodName",
+      "file" : "Test.cpp",
+      "line" : "24",
+      "authors" : [
+        "Jarno Hendriksen"
+      ]
+    },
+    "db":{
+      "name" : "functionName",
+      "project" : "TestProject",
+      "file" : "file.cpp",
+      "line" : "33",
+      "authors" : [
+        "Jarno Hendriksen",
+        "Rowin Schouten"
+      ],
+      "vulnerabilities" : [
+        {
+          "123" : "url.com"
+        }
+      ]
+    }
+  },
+  "8238248745":{
+    
+  }
+}
