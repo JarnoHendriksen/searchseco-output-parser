@@ -1,3 +1,5 @@
+import o2x = require('object-to-xml');
+
 let input = `---------------
 Hash 1234567890
 ---------------
@@ -206,6 +208,8 @@ switch (process.argv[2]){
   case "-p": case "--pretty":
     printOutput(output);
     break;
+  case "-x": case "--xml":
+    console.log(o2x(output));
   case "-h": case "--help":
     console.log('Flags:');
     console.log('-j, --json     Return output in JSON format');
