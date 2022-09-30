@@ -18,7 +18,12 @@
   },
   "homepage": "https://github.com/JarnoHendriksen/github-actions-test-2#readme",
   "dependencies": {
+    "minimist": "^1.2.6",
+    "object-to-xml": "^2.0.0",
     "simple-text-parser": "^2.1.1",
     "typescript": "^4.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.23"
   }
 }

@@ -5,6 +5,7 @@ Hash 1234567890
   *Method methodName in file Test.cpp line 24
    Authors of local function: 
   AuthorName
+  AuthorName2
 
 DATABASE
   *Method functionName in project projName1 in file file.cpp line 33
@@ -103,14 +104,16 @@ function getHashIndices(input : String[]) : number[]{
 // so the data are always the 2nd, 5th, and 7th words (index 1, 4, and 6 resp.)
 function getMethodInfo(input : String[], start : number, end : number) : MethodData{
   let methodDataLine = getMatchIndicesOfHash(input, start, end);
-  let words = input[methodDataLine[0]].split(' ');
+  let words = input[methodDataLine[0]].split(' ').filter(x => x);
+  //console.log(words);
   let auth : String[] = [];
 
   // List of authors always starts two lines below the line with method data,
   // and ends before the line containing DATABASE
   let index = methodDataLine[0] + 2;
   while (input[index] != "DATABASE"){
-    auth.push(input[index++]);
+    if (input[index] != "") auth.push(input[index]);
+    index++;
   }
 
   let data : MethodData = {
@@ -129,8 +132,8 @@ function getMatches(input : String[], start : number, end : number) : Match[]{
     let words = input[methodDataLine[i]].split(' ');
     let auth : String[] = [];
 
-    let vulnLine = input[methodDataLine[i]+2].split(' ')[8].split('(');
-    console.log(vulnLine + '|' + methodDataLine[i] + '|' + start + ',' + end);
+    let vulnLine = input[methodDataLine[i]+2].split(' ')[6].split('(');
+    //console.log(vulnLine + '|' + methodDataLine[i] + '|' + start + ',' + end);
     let vCode = vulnLine[0];
     let vUrl = vulnLine[1].substring(0, vulnLine[1].length - 1);
 
@@ -139,15 +142,15 @@ function getMatches(input : String[], start : number, end : number) : Match[]{
     // List of authors always starts two lines below the line with method data,
     // and ends before the next *Method or the next Hash header (a string of dashes)
     let index = methodDataLine[i] + 4;
-    while (input[index].search(/\*Method/) == -1 && input[index].search(/[-]+/) == -1 && index < end-1){
-      console.log(index);
+    while (input[index].search(/\*Method/) == -1 && input[index].search(/[-]+/) == -1 && input[index]!="" && index < end-1){
       auth.push(input[index++]);
     }
 
     let d : MethodData = {
       name: words[1],
-      file: words[4],
-      line: parseInt(words[6]),
+      file: words[7],
+      project: words[4],
+      line: parseInt(words[9]),
       authors: auth
     };
 
@@ -169,10 +172,51 @@ function getMatchIndicesOfHash(input : String[], start : number, end : number){
 }
 
 let inp = input.split('\n');
-for(const l of inp){
-  l.trim();
+for(let n = 0; n < inp.length; n++){
+  inp[n] = inp[n].trim();
+}
+
+function printOutput(output : Output){
+  console.log('--------------------------------------------------------------');
+  for (const method of output.methods){
+    console.log('Hash: ' + method.hash);
+    console.log('Name: ' + method.data.name);
+    console.log('File: ' + method.data.file + ':' + method.data.line);
+    console.log('Authors: ' + method.data.authors);
+    console.log('-------');
+    console.log('matches');
+    console.log('-------');
+    for (const match of method.matches){
+      console.log('Name: ' + match.data.name);
+      console.log('Project: ' + match.data.project);
+      console.log('File: ' + match.data.file + ':' + match.data.line);
+      console.log('Vulnerabilities: ' + match.vuln.code + ' (' + match.vuln.url + ')');
+      console.log('Authors: ' + match.data.authors + '\n');
+    }
+    console.log('--------------------------------------------------------------');
+  }
 }
 
 output = ParseInput(inp);
 
-console.log(output.methods[0].hash);
+switch (process.argv[2]){
+  case "-j": case"--json":
+    console.log(JSON.stringify(output));
+    break;
+  case "-p": case "--pretty":
+    printOutput(output);
+    break;
+  case "-h": case "--help":
+    console.log('Flags:');
+    console.log('-j, --json     Return output in JSON format');
+    console.log('-p, --pretty   Return pretty printed version of output');
+    console.log('-x, --xml      Return output in XML format');
+    break;
+  default:
+    console.log('Unknown flag. Using default printing method.')
+    printOutput(output);
+    break;
+}
+
+//console.log(JSON.stringify(output));
+//printOutput(output);
